@@ -10,26 +10,40 @@ public class GameManager : MonoBehaviour
     public Button restartBtn;
 
     [Header("ÇÁ¸®Æé")]
-    public GameObject[] Obstacles;
+    public GameObject[] obstacles;
 
     public int Score = 0;
-    private bool isGameOver = false;
+    public bool isGameOver = false;
 
-    private Transform _transform;
+    private ObstacleSpawner obstSpwn;
+    private PlayerControl playCtrl;
 
     void Start()
     {
-        _transform = transform;
+        obstSpwn = GetComponent<ObstacleSpawner>();
+        playCtrl = GetComponent<PlayerControl>();
 
         StartCoroutine(GameFlowRoutine());
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            isGameOver = true;
+        }
     }
 
     IEnumerator GameFlowRoutine()
     {
         while (!isGameOver)
         {
-            //StartCoroutine(ObstacleRoutine());
+            StartCoroutine(ObstacleRoutine());
             yield return StartCoroutine(ScoreRoutine());
+            if (playCtrl.Die())
+            {
+                isGameOver = true;
+            }
         }
 
         yield return new WaitForSecondsRealtime(1f);
@@ -40,7 +54,7 @@ public class GameManager : MonoBehaviour
     IEnumerator ObstacleRoutine()
     {
         yield return new WaitForSecondsRealtime(1.5f); 
-        SpawnObstacle();
+        obstSpwn.SpawnObstacle();
     }
 
     IEnumerator ScoreRoutine()
@@ -48,12 +62,5 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         Score++;
         scoreUI.text = $"Score:{Score}";
-    }
-
-    void SpawnObstacle()
-    {
-        var randomObst = Random.Range(0, Obstacles.Length);
-
-
     }
 }

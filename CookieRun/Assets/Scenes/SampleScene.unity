@@ -289,7 +289,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c99044e28299324587196c55944816f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerControl
-  jumpForce: 150
+  scoreUI: {fileID: 0}
+  gameOverUI: {fileID: 0}
+  restartBtn: {fileID: 0}
+  obstacles: []
+  Score: 0
+  isGameOver: 0
+  jumpForce: 3
   jumpCount: 0
 --- !u!54 &347433374
 Rigidbody:
@@ -649,13 +655,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   scoreUI: {fileID: 424761223}
-  gameOverUI: {fileID: 0}
-  restartBtn: {fileID: 0}
-  Obstacles:
-  - {fileID: 5602170053828974660, guid: dc2d4d8387e263d4fb71129654f834c4, type: 3}
-  - {fileID: 2718414811339522115, guid: 13e58ee98467b954dadee3157fc785c8, type: 3}
-  - {fileID: 7752967301594582240, guid: 5bef47287bf4a1e409c65bcc1db05687, type: 3}
+  gameOverUI: {fileID: 1579461967}
+  restartBtn: {fileID: 653016031}
+  obstacles: []
   Score: 0
+  isGameOver: 0
 --- !u!4 &579443157
 Transform:
   m_ObjectHideFlags: 0

@@ -1,18 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : GameManager
 {
-    public float jumpForce = 10f;
+    public float jumpForce = 3f;
     public int jumpCount = 0;
     
     private Rigidbody rb;
-    private Transform _transform;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        _transform = GetComponent<Transform>();
     }
 
     private void Update()
@@ -23,12 +21,11 @@ public class PlayerControl : MonoBehaviour
             Jump();
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.DownArrow))
         {
             Slide(); 
         }
-
-        if (Input.GetKeyUp(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.DownArrow))
         {
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
@@ -43,13 +40,14 @@ public class PlayerControl : MonoBehaviour
         
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            PlayerDead();
+            _ = Die();
         }
     }
 
     private void Jump()
     {
         Vector3 jumpVelocity = Vector3.up * Mathf.Sqrt(jumpForce * -Physics.gravity.y);
+
         if (jumpCount < 2)
         {
             rb.angularVelocity = Vector3.zero;
@@ -60,11 +58,12 @@ public class PlayerControl : MonoBehaviour
 
     private void Slide()
     {
-        _transform.localScale = new Vector3(0.5f, 0.25f, 0.5f);
+        transform.localScale = new Vector3(0.5f, 0.25f, 0.5f);
     }
 
-    private void PlayerDead()
+    public bool Die() 
     {
         Destroy(gameObject);
+        return true;
     }
 }
